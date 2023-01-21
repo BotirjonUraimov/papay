@@ -4,6 +4,7 @@ const res = require("express/lib/response");
 const app = express(); // expressning objectini ushlab olish uchun
 const http = require("http");
 const fs = require("fs");
+const router = require("./router");
 
 //MongoDB calling
 const db = require("./server").db();
@@ -22,5 +23,6 @@ app.set("views", "views");
 app.set("view engine", "ejs");
 
 //routing code
+app.use("/", router);
 
 module.exports = app;
