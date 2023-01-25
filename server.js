@@ -3,21 +3,20 @@ dotenv.config();
 
 const kill = require("kill-port");
 const http = require("http");
-const mongodb = require("mongodb");
+const mongoose = require("mongoose");
 
 let db;
 const connectionString = process.env.MONGO_URL;
 
-mongodb.connect(
+mongoose.connect(
   connectionString,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  (err, client) => {
+  (err, goose) => {
+    // goose o'rniga ihtiyoriy nom tanlash mumkin
     if (err) console.log("ERROR on connection MongoDB");
     else {
       console.log("MongoDB connection succeed");
-      //console.log(client); clint objectini ko'rish
-      module.exports = client;
-
+      //console.log(goose);
       const app = require("./app");
       const server = http.createServer(app);
       let PORT = process.env.PORT || 3003;

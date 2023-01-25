@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const memberController = require("./controllers/memberController");
 
+//routers that releted to members
 router.get("/", memberController.home);
 router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
 router.get("/logout", memberController.logout);
 
+// other routers
 router.get("/menu", function (req, res) {
   res.send(
     "<h1 style = 'text-align:center; margin: 100px;'> You are in  <span style = 'color: green; font-weight: bold;'> MENU </span>  page </h1>"

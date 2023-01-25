@@ -6,10 +6,6 @@ const http = require("http");
 const fs = require("fs");
 const router = require("./router");
 
-//MongoDB calling
-const db = require("./server").db();
-const mongodb = require("mongodb");
-
 // 1 Kirish
 app.use(express.static("public"));
 app.use(express.static(__dirname + "public"));
