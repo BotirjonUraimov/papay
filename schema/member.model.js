@@ -1,4 +1,9 @@
 const mongoose = require("mongoose");
+const {
+  member_type_enums,
+  member_status_enums,
+  ordernary_enums,
+} = require("../lib/config");
 
 const memberSchema = new mongoose.Schema(
   {

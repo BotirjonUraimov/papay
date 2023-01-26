@@ -19,6 +19,7 @@ app.set("views", "views");
 app.set("view engine", "ejs");
 
 //routing code
-app.use("/", router);
+//app.use("/resto", router_bssr); //ananaviy usul yani ejs orqali
+app.use("/", router); //modern or single page uslul ya'ni React JS
 
 module.exports = app;
