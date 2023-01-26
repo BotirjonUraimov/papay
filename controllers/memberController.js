@@ -6,10 +6,10 @@ let memberController = module.exports;
 memberController.signup = async (req, res) => {
   try {
     console.log("POST: controller/signup");
-    const data = req.body;
-    const member = new Member();
+    const data = req.body,
+      member = new Member(),
+      new_member = await member.signupData(data);
     //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
-    const new_member = await member.signupData(data);
 
     res.json({ state: "succeed", data: new_member });
   } catch (err) {
@@ -18,9 +18,19 @@ memberController.signup = async (req, res) => {
   }
 };
 
-memberController.login = (req, res) => {
-  console.log("POST memberController.login");
-  res.send("You are in LOGIN page");
+memberController.login = async (req, res) => {
+  try {
+    console.log("POST: controller/login");
+    const data = req.body,
+      member = new Member(),
+      result = await member.loginData(data);
+    //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
+
+    res.json({ state: "succeed", data: result });
+  } catch (err) {
+    console.log(`ERROR: controller/login`, err.message);
+    res.json({ state: "failed", message: err.message });
+  }
 };
 
 memberController.logout = (req, res) => {
