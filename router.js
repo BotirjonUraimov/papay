@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const memberController = require("./controllers/memberController");
 
+/******************************
+ *          REST API          *
+ *****************************/
+
 //routers that releted to members
 router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
