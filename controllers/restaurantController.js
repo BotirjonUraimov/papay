@@ -3,6 +3,18 @@ const Member = require("../models/Member");
 
 let restaurantController = module.exports;
 
+restaurantController.getMyRestaurantData = async (req, res) => {
+  try {
+    console.log("GET: controller/getMyRestaurantData");
+    // to do: Get my restauranr product
+
+    res.render("restaurant-menu");
+  } catch (err) {
+    console.log(`ERROR: controller/getMyRestaurantData`, err.message);
+    res.json({ state: "failed", message: err.message });
+  }
+};
+
 restaurantController.getSignupMyRestaurant = async (req, res) => {
   try {
     console.log("GET: controller/getSignupMyRestaurant");
@@ -21,7 +33,9 @@ restaurantController.signupProcess = async (req, res) => {
       new_member = await member.signupData(data);
     //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
 
-    res.json({ state: "succeed", data: new_member });
+    //SESSION
+    req.session.member = new_member;
+    res.redirect("/resto/products/menu");
   } catch (err) {
     console.log(`ERROR: controller/signup`, err.message);
     res.json({ state: "failed", message: err.message });
@@ -46,7 +60,10 @@ restaurantController.loginProcess = async (req, res) => {
       result = await member.loginData(data);
     //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
 
-    res.json({ state: "succeed", data: result });
+    req.session.member = result;
+    req.session.save(function () {
+      res.redirect("/resto/products/menu");
+    });
   } catch (err) {
     console.log(`ERROR: controller/login`, err.message);
     res.json({ state: "failed", message: err.message });
@@ -58,4 +75,12 @@ restaurantController.logout = (req, res) => {
   res.send(
     "<h1 style = 'text-align:center; margin: 100px;'> You are in  <span style = 'color: green; font-weight: bold;'> LOGOUT </span>  page </h1>"
   );
+};
+
+restaurantController.checkSession = (req, res) => {
+  if (req.session?.member) {
+    res.json({ state: "succeed", data: req.session.member });
+  } else {
+    res.json({ state: "Failed", message: "You are not autenticated member" });
+  }
 };

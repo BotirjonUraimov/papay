@@ -7,7 +7,7 @@ const fs = require("fs");
 const router = require("./router");
 const router_bssr = require("./router_bssr");
 
-const session = require("express-session");
+let session = require("express-session");
 const MongoDBSore = require("connect-mongodb-session")(session);
 const store = new MongoDBSore({
   uri: process.env.MONGO_URL,
@@ -32,6 +32,12 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(function (req, res, next) {
+  res.locals.member = req.session.member;
+
+  next();
+});
 
 // 3 - Views code
 app.set("views", "views");
