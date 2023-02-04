@@ -33,7 +33,7 @@ class Member {
     try {
       const member = await this.memberModel
         .findOne({ mb_nick: input.mb_nick }, { mb_nick: 1, mb_password: 1 })
-        //dindOne methodi objectni argument sifatida qabul qilib. undagi birinchi objecktda databasedagi mb_nick nomi key va foydalanuvchi kiritgan inputdagi malumot kiritiladi va methot ularni solishtirib bizga mos kelsa shu malumotni qaytaradi. ikkin objectdagi 1 qiymatlar majburiy chaqairish hisoblanadi
+        //findOne methodi objectni argument sifatida qabul qilib. undagi birinchi objecktda databasedagi mb_nick nomi key va foydalanuvchi kiritgan inputdagi malumot kiritiladi va methot ularni solishtirib bizga mos kelsa shu malumotni qaytaradi. ikkin objectdagi 1 qiymatlar majburiy chaqairish hisoblanadi
         .exec();
 
       assert.ok(member, Definer.auth_err3);
