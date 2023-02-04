@@ -13,23 +13,37 @@
 
 //  M-Task
 
-class Members {
-  #counts;
-  constructor(counts) {
-    this.#counts = counts;
+class Member {
+  //state
+  #accounPoints;
+  //constructor
+  constructor(points) {
+    this.#accounPoints = 0;
   }
+
+  //Method
   inform() {
-    return console.log(`hello ${this.#counts}`);
+    return this.#accounPoints;
   }
 
   addMember(son) {
-    this.#increaseMember(son);
+    this.#countForAdd(son);
   }
 
-  #increaseMember(son) {
-    this.#counts = this.#counts + son;
+  #countForAdd(a) {
+    this.#accounPoints = this.#accounPoints + a;
+  }
+
+  removeMember(son) {
+    this.#countForRemove(son);
+  }
+  #countForRemove(a) {
+    this.#accounPoints = this.#accounPoints - a;
   }
 }
-const member = new Members(5);
+
+const member = new Member();
 member.addMember(5);
-console.log(member.inform);
+console.log(member.inform());
+member.removeMember(3);
+console.log(member.inform());
