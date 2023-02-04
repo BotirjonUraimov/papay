@@ -1,3 +1,7 @@
+const assert = require("assert");
+const Definer = require("../lib/misteke");
+const Product = require("../models/Product");
+
 let productController = module.exports;
 
 productController.getAllProducts = async (req, res) => {
@@ -12,10 +16,22 @@ productController.getAllProducts = async (req, res) => {
 productController.addNewProduct = async (req, res) => {
   try {
     console.log("POST: controller/addNewProduct");
+    assert(req.files, Definer.genneral_err3);
 
-    // TODO ptoduct creation develop
+    const product = new Product();
+    let data = req.body;
 
-    res.json({ test: "ok" });
+    data.product_images = req.files.map((ele) => {
+      return ele.path;
+    });
+
+    const result = await product.addNewProductData(data, req.member);
+
+    const html = `<script>alert(new dish added successfully);
+    window.location.replace(resto/products/menu); 
+    </script>`;
+
+    res.end(html);
   } catch (err) {
     console.log(`ERROR, controller/addNewProduct ${err.message}`);
   }
