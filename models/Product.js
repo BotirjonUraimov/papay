@@ -9,10 +9,24 @@ class Product {
     this.productModel = ProductModel;
   }
 
+  async getAllProductsDataResto(member) {
+    try {
+      member.id = shapeIntMongooseObjectId(member.id);
+      const result = await this.productModel.find({
+        restaurant_mb_id: member.id,
+      });
+      assert.ok(result, Definer.genneral_err1);
+      console.log(result);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async addNewProductData(data, member) {
     try {
       data.restaurant_mb_id = shapeIntMongooseObjectId(member._id);
-      console.log(data);
+      //console.log(data);
 
       const new_product = this.productModel(data);
       const result = await new_product.save();

@@ -1,16 +1,17 @@
-const res = require("express/lib/response");
 const Member = require("../models/Member");
+const Product = require("../models/Product");
 
 let restaurantController = module.exports;
 
-restaurantController.getMyRestaurantData = async (req, res) => {
+restaurantController.getMyRestaurantProducts = async (req, res) => {
   try {
-    console.log("GET: controller/getMyRestaurantData");
+    console.log("GET: controller/getMyRestaurantProducts");
     // to do: Get my restauranr product
-
-    res.render("restaurant-menu");
+    const product = new Product(); //funcsiya emasku nega qavs bor
+    const data = await product.getAllProductsDataResto(res.locals.member);
+    res.render("restaurant-menu", { restaurant_data: data });
   } catch (err) {
-    console.log(`ERROR: controller/getMyRestaurantData`, err.message);
+    console.log(`ERROR: controller/getMyRestaurantProducts`, err.message);
     res.json({ state: "failed", message: err.message });
   }
 };

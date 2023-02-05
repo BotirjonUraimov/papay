@@ -62,7 +62,8 @@ const productSchema = new mongoose.Schema(
     product_images: { type: Array, required: false, default: [] },
     product_likes: { type: Number, required: false, default: 0 },
     product_views: { type: Number, required: false, default: 0 },
-    restaurand_mb_id: {
+
+    restaurant_mb_id: {
       type: Schema.Types.ObjectId,
       ref: "Member",
       required: false,
@@ -72,7 +73,7 @@ const productSchema = new mongoose.Schema(
 );
 
 productSchema.index(
-  { restaurand_mb_id: 1, product_name: 1, product_size: 1, product_volume: 1 },
+  { restaurant_mb_id: 1, product_name: 1, product_size: 1, product_volume: 1 },
   { unique: true }
 );
 
