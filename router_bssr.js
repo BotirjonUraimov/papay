@@ -9,9 +9,12 @@ const uploader_product = require("./utils/upload-multer")("products");
  *****************************/
 
 //routers that releted to members
+
+router_bssr.get("/", restaurantController.home);
+
 router_bssr
-  .get("/signup", restaurantController.getSignupMyRestaurant)
-  .post("/signup", restaurantController.signupProcess);
+  .get("/sign-up", restaurantController.getSignupMyRestaurant)
+  .post("/sign-up", restaurantController.signupProcess);
 
 router_bssr
   .get("/login", restaurantController.getLoginMyRestaurant)
