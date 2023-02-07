@@ -38,7 +38,7 @@ restaurantController.getSignupMyRestaurant = async (req, res) => {
 
 restaurantController.signupProcess = async (req, res) => {
   try {
-    console.log("POST: controller/signup");
+    console.log("POST: controller/signupProcess");
     const data = req.body,
       member = new Member(),
       new_member = await member.signupData(data);
@@ -48,7 +48,7 @@ restaurantController.signupProcess = async (req, res) => {
     req.session.member = new_member;
     res.redirect("/resto/products/menu");
   } catch (err) {
-    console.log(`ERROR: controller/signup`, err.message);
+    console.log(`ERROR: controller/signupProcess`, err.message);
     res.json({ state: "failed", message: err.message });
   }
 };
@@ -65,18 +65,19 @@ restaurantController.getLoginMyRestaurant = async (req, res) => {
 
 restaurantController.loginProcess = async (req, res) => {
   try {
-    console.log("POST: controller/login");
-    const data = req.body,
-      member = new Member(),
-      result = await member.loginData(data);
+    console.log("POST: controller/loginProcess");
+    const data = req.body;
+    (member = new Member()), (result = await member.loginData(data));
     //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
 
     req.session.member = result;
     req.session.save(function () {
-      res.redirect("/resto/products/menu");
+      result.mb_type === "ADMIN"
+        ? res.redirect("/resto/all-restaurant")
+        : res.redirect("/resto/products/menu");
     });
   } catch (err) {
-    console.log(`ERROR: controller/login`, err.message);
+    console.log(`ERROR: controller/loginProcess`, err.message);
     res.json({ state: "failed", message: err.message });
   }
 };
