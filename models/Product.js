@@ -11,11 +11,12 @@ class Product {
 
   async getAllProductsDataResto(member) {
     try {
-      member.id = shapeIntMongooseObjectId(member.id);
+      member._id = shapeIntMongooseObjectId(member._id);
       const result = await this.productModel.find({
-        restaurant_mb_id: member.id,
+        restaurant_mb_id: member._id,
       });
       assert.ok(result, Definer.genneral_err1);
+
       console.log(result);
       return result;
     } catch (err) {
