@@ -1,5 +1,113 @@
 <%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/login.css" />
+
 <body>
-  <h1>SignUp page test</h1>
+  <form
+    action="/resto/sing-up"
+    method="POST"
+    class="login_container"
+    enctype="multipart/form-data"
+  >
+    <div class="login_frame" style="width: 650px; height: 730px">
+      <div class="login_top">
+        <span>Sign up</span>
+        <div>
+          Bosh sahifaga qaytish <a href="/resto" class="sign_up">Home</a>
+        </div>
+        <p>
+          Ro'ygatdan allaqachon o'tganmisiz?
+          <a href="/resto/login" class="sign_up">Login</a>
+        </p>
+      </div>
+
+      <div class="sign_input_frame">
+        <div class="sign_up_frame">
+          <label for="">Username</label>
+          <input
+            type="text"
+            name="mb_nick"
+            placeholder="Username"
+            value=""
+            required
+            class="form-control"
+            id="inputPassword2"
+          />
+        </div>
+        <div class="sign_up_frame">
+          <label for="">Phone number</label>
+          <input
+            type="text"
+            name="mb_phone"
+            placeholder="Phone number"
+            value=""
+            required
+            class="form-control"
+            id="inputPassword2"
+          />
+        </div>
+      </div>
+
+      <div class="sign_input_frame">
+        <div class="sign_up_frame">
+          <label for="">Password</label>
+          <input
+            type="password"
+            name="mb_password"
+            placeholder="password"
+            value=""
+            required
+            class="form-control"
+            id="inputPassword2"
+          />
+        </div>
+        <div class="sign_up_frame">
+          <label for="">Confirm password</label>
+          <input
+            type="password"
+            name="mb_password"
+            placeholder="password"
+            value=""
+            required
+            class="form-control"
+            id="inputPassword2"
+          />
+        </div>
+      </div>
+
+      <div class="login_input_frame">
+        <div class="media_frame">
+          <img class="upload_img_frame" src="/images/example.jpeg" alt="" />
+          <div class="upload_container">
+            <span class="media_text">Restaurant's image</span>
+            <div class="filebox bs3-primary preview-image">
+              <input
+                class="upload_name"
+                type="text"
+                value="upload name"
+                disabled="disabled"
+              />
+              <label for=""> Upload image</label>
+              <input
+                type="file"
+                id="input_file"
+                name="restaurant_img"
+                placeholder="upload img"
+                class="upload-hidden form-control-file restaurant_img"
+              />
+            </div>
+            <p class="thumbnail_desc">
+              Oshxon rasmingizni bu yerga yuklang. <br />
+              Muhim ko'rsatmalar!!! .jpg, .jpeg, yoki.png <br />
+              rasmda matn yo'q bo'lishi shart!
+            </p>
+          </div>
+        </div>
+      </div>
+      <button class="login_btn btn" name="signup" type="submit">
+        Registration
+      </button>
+    </div>
+  </form>
 </body>
 <%- include('includes/footer') %>
