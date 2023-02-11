@@ -1,5 +1,7 @@
+const assert = require("assert");
 const Member = require("../models/Member");
 const Product = require("../models/Product");
+const Definer = require("../lib/misteke");
 
 let restaurantController = module.exports;
 
@@ -39,13 +41,17 @@ restaurantController.getSignupMyRestaurant = async (req, res) => {
 restaurantController.signupProcess = async (req, res) => {
   try {
     console.log("POST: controller/signupProcess");
-    const data = req.body,
-      member = new Member(),
-      new_member = await member.signupData(data);
-    //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
+    assert(req.file, Definer.general_err3);
 
-    //SESSION
-    req.session.member = new_member;
+    let new_member = req.body;
+    new_member.mb_type = "RESTAURANT";
+    new_member.mb_image = req.file.path;
+
+    const member = new Member();
+    const result = await member.signupData(new_member);
+    assert(result, Definer.general_err1);
+
+    req.session.member = result;
     res.redirect("/resto/products/menu");
   } catch (err) {
     console.log(`ERROR: controller/signupProcess`, err.message);
@@ -66,8 +72,9 @@ restaurantController.getLoginMyRestaurant = async (req, res) => {
 restaurantController.loginProcess = async (req, res) => {
   try {
     console.log("POST: controller/loginProcess");
-    const data = req.body;
-    (member = new Member()), (result = await member.loginData(data));
+    const data = req.body,
+      member = new Member(),
+      result = await member.loginData(data);
     //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
 
     req.session.member = result;
