@@ -89,7 +89,7 @@
               <input
                 class="upload-name"
                 type="text"
-                value="upload-name"
+                value="choose a photo"
                 disabled="disabled"
               />
               <label for="input_file"> Upload image</label>
@@ -139,6 +139,7 @@
         }
       }
       $(this).siblings(".upload-name").val(filename);
+      console.log($(this).siblings(".upload-name"));
     });
   });
 
