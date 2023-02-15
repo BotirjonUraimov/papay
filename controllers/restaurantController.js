@@ -108,14 +108,40 @@ restaurantController.validateAuthRestaurant = (req, res, next) => {
   } else
     res.json({
       state: "Fail",
-      error: "Only Authenticated member with restaurant type",
+      message: "Only Authenticated member with restaurant type",
     });
+};
+restaurantController.validateAdmin = (req, res, next) => {
+  if (req.session?.member?.mb_type === "ADMIN") {
+    req.member = req.session.member;
+    next();
+  } else {
+    const html = `<script>
+                    alert("Admin page: Permission denied!");
+                        window.location.replace('/resto'); 
+                    </script>`;
+    res.end(html);
+  }
 };
 
 restaurantController.checkSession = (req, res) => {
   if (req.session?.member) {
     res.json({ state: "succeed", data: req.session.member });
   } else {
-    res.json({ state: "Failed", message: "You are not autenticated member" });
+    res.json({
+      state: "Failed",
+      message: "You are not autenticated member",
+    });
+  }
+};
+
+restaurantController.getAllRestaurant = (req, res) => {
+  try {
+    console.log("GET restaurantController.getAllRestaurant");
+    //todo hamma restaurantlarni chaqiramiz
+    res.render("all-restaurants");
+  } catch (err) {
+    console.log(`ERROR, cont/getAllRestaurant, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
   }
 };

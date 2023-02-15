@@ -230,7 +230,7 @@ body {
 }
 .filebox {
   display: flex;
-  border-radius: 8px;
+  border-radius: 20px;
   margin-top: 25px;
 }
 
@@ -258,10 +258,10 @@ body {
   font-weight: 400px;
   font-size: 15px;
   line-height: 26px;
-  color: #fff;
+  color: #ffffff;
 }
 
-.upload_name {
+.upload-name {
   position: relative;
   padding: 20px;
   width: 85%;
