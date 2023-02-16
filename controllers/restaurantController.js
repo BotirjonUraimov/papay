@@ -2,6 +2,7 @@ const assert = require("assert");
 const Member = require("../models/Member");
 const Product = require("../models/Product");
 const Definer = require("../lib/misteke");
+const Restaurant = require("../models/restaurant");
 
 let restaurantController = module.exports;
 
@@ -18,7 +19,7 @@ restaurantController.home = (req, res) => {
 restaurantController.getMyRestaurantProducts = async (req, res) => {
   try {
     console.log("GET: controller/getMyRestaurantProducts");
-    // to do: Get my restauranr product
+    // to do: Get my restaurant product
     const product = new Product();
     const data = await product.getAllProductsDataResto(res.locals.member);
     res.render("restaurant-menu", { restaurant_data: data });
@@ -135,11 +136,13 @@ restaurantController.checkSession = (req, res) => {
   }
 };
 
-restaurantController.getAllRestaurant = (req, res) => {
+restaurantController.getAllRestaurants = async (req, res) => {
   try {
     console.log("GET restaurantController.getAllRestaurant");
-    //todo hamma restaurantlarni chaqiramiz
-    res.render("all-restaurants");
+    const restaurant = new Restaurant();
+    const restaurants_data = await restaurant.getAllRestaurantsData();
+    console.log("restaurants_data:", restaurants_data);
+    res.render("all-restaurants", { restaurants_data: restaurants_data });
   } catch (err) {
     console.log(`ERROR, cont/getAllRestaurant, ${err.message}`);
     res.json({ state: "fail", message: err.message });
