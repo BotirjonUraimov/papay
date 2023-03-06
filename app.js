@@ -6,6 +6,7 @@ const http = require("http");
 const fs = require("fs");
 const router = require("./router");
 const router_bssr = require("./router_bssr");
+const cookieParser = require("cookie-parser");
 
 let session = require("express-session");
 const MongoDBSore = require("connect-mongodb-session")(session);
@@ -19,6 +20,7 @@ app.use(express.static("public"));
 app.use(express.static(__dirname + "public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // 2 - Session code
 app.use(

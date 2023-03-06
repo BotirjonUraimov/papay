@@ -1,6 +1,8 @@
 const res = require("express/lib/response");
 const Member = require("../models/Member");
-
+const jwt = require("jsonwebtoken");
+const assert = require("assert");
+const Definer = require("../lib/misteke");
 let memberController = module.exports;
 
 memberController.signup = async (req, res) => {
@@ -10,6 +12,12 @@ memberController.signup = async (req, res) => {
       member = new Member(),
       new_member = await member.signupData(data);
     //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
+
+    const token = memberController.createToken(new_member);
+    res.cookie("access_token", token, {
+      maxAge: 6 * 3600 * 1000,
+      httpOnly: true,
+    });
 
     res.json({ state: "succeed", data: new_member });
   } catch (err) {
@@ -26,6 +34,12 @@ memberController.login = async (req, res) => {
       result = await member.loginData(data);
     //console.log("body:::", req.body); // member schemadan kelgan ma'lumot ko'rish uchun
 
+    const token = memberController.createToken(result);
+    res.cookie("access_token", token, {
+      maxAge: 6 * 3600 * 1000,
+      httpOnly: true,
+    });
+
     res.json({ state: "succeed", data: result });
   } catch (err) {
     console.log(`ERROR: controller/login`, err.message);
@@ -38,4 +52,23 @@ memberController.logout = (req, res) => {
   res.send(
     "<h1 style = 'text-align:center; margin: 100px;'> You are in  <span style = 'color: green; font-weight: bold;'> LOGOUT </span>  page </h1>"
   );
+};
+
+memberController.createToken = (result) => {
+  try {
+    const upload_data = {
+      _id: result._id,
+      mb_nick: result.mb_nick,
+      mb_type: result.mb_type,
+    };
+
+    const token = jwt.sign(upload_data, process.env.SECRET_TOKEN, {
+      expiresIn: "6h",
+    });
+
+    assert.ok(token, Definer.auth_err2);
+    return token;
+  } catch (err) {
+    throw err;
+  }
 };
