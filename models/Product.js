@@ -2,7 +2,6 @@ const assert = require("assert");
 const { shapeIntMongooseObjectId } = require("../lib/config");
 const ProductModel = require("../schema/product.model");
 const Definer = require("../lib/misteke");
-const res = require("express/lib/response");
 
 class Product {
   constructor() {
@@ -11,11 +10,11 @@ class Product {
 
   async getAllProductsData(member, data) {
     try {
-      const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      const auth_mb_id = shapeIntMongooseObjectId(member?._id);
 
       let match = { product_status: "PROCESS" };
       if (data.restaurant_mb_id) {
-        match["restaurant_mb_id"] = shapeIntoMongooseObjectId(
+        match["restaurant_mb_id"] = shapeIntMongooseObjectId(
           data.restaurant_mb_id
         );
         match["product_collection"] = data.product_collection;
