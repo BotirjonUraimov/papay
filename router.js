@@ -11,6 +11,11 @@ router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
 router.get("/logout", memberController.logout);
 router.get("/check-me", memberController.checkMyAuthentication);
+router.post(
+  "/member/:id",
+  memberController.retriveAuthMember,
+  memberController.getChosenMember
+);
 
 // other routers
 router.get("/menu", function (req, res) {
