@@ -6,6 +6,24 @@ const Restaurant = require("../models/restaurant");
 
 let restaurantController = module.exports;
 
+restaurantController.getRestaurants = async (req, res) => {
+  try {
+    console.log("GET: controller/getRestaurants");
+    const data = req.query;
+
+    const restaurant = new Restaurant();
+    const result = await restaurant.getRestaurantsData(req.member, data);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR: controller/getRestaurants`, err.message);
+    res.json({ state: "failed", message: err.message });
+  }
+};
+
+/***********************************
+ *      BSSR RELATED METHODS       *
+ **********************************/
+
 restaurantController.home = (req, res) => {
   try {
     console.log("GET: controller/home");
@@ -127,7 +145,7 @@ restaurantController.validateAdmin = (req, res, next) => {
 
 restaurantController.checkSession = (req, res) => {
   if (req.session?.member) {
-    res.json({ state: "succeed", data: req.session.member });
+    res.json({ state: "success", data: req.session.member });
   } else {
     res.json({
       state: "Failed",
