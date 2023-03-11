@@ -1,4 +1,5 @@
 const memberModel = require("../schema/member.model");
+const productModel = require("../schema/product.model");
 const ViewModel = require("../schema/view.model");
 
 class View {
@@ -6,6 +7,7 @@ class View {
     this.viewModel = ViewModel;
     this.memberModel = memberModel;
     this.mb_id = mb_id;
+    this.productModel = productModel;
   }
 
   async validateChosenTarget(view_ref_id, group_type) {
@@ -14,9 +16,17 @@ class View {
       switch (group_type) {
         case "member":
           result = await this.memberModel
-            .findById({
+            .findOne({
               _id: view_ref_id,
               mb_status: "ACTIVE",
+            })
+            .exec();
+          break;
+        case "product":
+          result = await this.productModel
+            .findOne({
+              _id: view_ref_id,
+              mb_status: "PROCESS",
             })
             .exec();
           break;
@@ -56,6 +66,16 @@ class View {
                 _id: view_ref_id,
               },
               { $inc: { mb_views: 1 } }
+            )
+            .exec();
+          break;
+        case "product":
+          await this.productModel
+            .findByIdAndUpdate(
+              {
+                _id: view_ref_id,
+              },
+              { $inc: { product_views: 1 } }
             )
             .exec();
           break;

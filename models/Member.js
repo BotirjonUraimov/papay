@@ -69,6 +69,7 @@ class Member {
         .aggregate([
           { $match: { _id: id, mb_status: "ACTIVE" } },
           { $unset: "mb_password" },
+          // todo: check auth member liked teh chosen member
         ])
         .exec();
       assert.ok(result, Definer.genneral_err2);

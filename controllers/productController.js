@@ -8,10 +8,24 @@ productController.getAllProducts = async (req, res) => {
   try {
     console.log("GET: controller/getAllProducts");
     const product = new Product();
-    const results = await product.getAllProductsData(req.member, req.body);
-    res.json({ state: "succeed", data: results });
+    const result = await product.getAllProductsData(req.member, req.body);
+    res.json({ state: "succeed", data: result });
   } catch (err) {
     console.log(`ERROR, controller/getAllProducts ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+productController.getChosenProduct = async (req, res) => {
+  try {
+    console.log("GET: controller/getChosenProduct");
+    const product = new Product();
+    const id = req.params.id;
+    const result = await product.getChosenProductData(req.member, id);
+
+    res.json({ state: "succeed", data: result });
+  } catch (err) {
+    console.log(`ERROR, controller/getChosenProduct ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };

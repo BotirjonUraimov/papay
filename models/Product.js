@@ -2,6 +2,7 @@ const assert = require("assert");
 const { shapeIntMongooseObjectId } = require("../lib/config");
 const ProductModel = require("../schema/product.model");
 const Definer = require("../lib/misteke");
+const Member = require("./Member");
 
 class Product {
   constructor() {
@@ -36,6 +37,30 @@ class Product {
         .exec();
 
       assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getChosenProductData(member, product_id) {
+    try {
+      const auth_mb_id = shapeIntMongooseObjectId(member?._id);
+      const id = shapeIntMongooseObjectId(product_id);
+
+      if (member) {
+        const member_obj = new Member();
+        member_obj.viewChosenItemByMember(member, id, "product");
+      }
+
+      const result = await this.productModel
+        .aggregate([
+          { $match: { _id: id, product_status: "PROCESS" } },
+          // todo: check auth member product likes
+        ])
+        .exec();
+
+      assert.ok(result, Definer.genneral_err1);
       return result;
     } catch (err) {
       throw err;
