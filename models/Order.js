@@ -36,6 +36,8 @@ class Order {
 
       // todo order item creation
 
+      await this.recordOrderItemsData(order_id, data);
+
       return order_id;
     } catch (err) {
       throw err;
@@ -56,6 +58,40 @@ class Order {
     } catch (err) {
       console.log(err);
       throw new Error(Definer.order_err1);
+    }
+  }
+
+  async recordOrderItemsData(order_id, data) {
+    try {
+      const pro_list = data.map(async (item) => {
+        return await this.saveOrderItemsData(item, order_id);
+      });
+
+      const result = await Promise.all(pro_list);
+      console.log("result::: ", result);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async saveOrderItemsData(item, order_id) {
+    try {
+      order_id = shapeIntMongooseObjectId(order_id);
+      item._id = shapeIntMongooseObjectId(item._id);
+      const order_item = new OrderItemModel({
+        item_quantity: item["quantity"],
+        item_price: item["price"],
+        order_id: order_id,
+        product_id: item["_id"],
+      });
+
+      const result = await order_item.save();
+      assert.ok(result, Definer.order_err2);
+
+      return "inserted";
+    } catch (err) {
+      console.log(err);
+      throw new Error(Definer.order_err2);
     }
   }
 }
