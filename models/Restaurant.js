@@ -1,6 +1,7 @@
 const Definer = require("../lib/misteke");
 const MemberModel = require("../schema/member.model");
 const assert = require("assert");
+const Member = require("./Member");
 const { shapeIntMongooseObjectId } = require("../lib/config");
 
 class Restaurant {
@@ -21,16 +22,18 @@ class Restaurant {
           match["mb_top"] = "Y";
           aggregationQuery.push({ $match: match });
           aggregationQuery.push({ $sample: { size: data.limit } });
-
+          aggregationQuery.push({ $unset: "mb_password" });
           break;
         case "random":
           aggregationQuery.push({ $match: match });
           aggregationQuery.push({ $sample: { size: data.limit } });
+          aggregationQuery.push({ $unset: "mb_password" });
           break;
         default:
           aggregationQuery.push({ $match: match });
           const sort = { [data.order]: -1 };
           aggregationQuery.push({ $sort: sort });
+          aggregationQuery.push({ $unset: "mb_password" });
           break;
       }
 
@@ -47,6 +50,29 @@ class Restaurant {
     }
   }
 
+  async getChosenRestaurantData(member, id) {
+    try {
+      id = shapeIntMongooseObjectId(id);
+
+      if (member) {
+        const member_obj = new Member();
+        await member_obj.viewChosenItemByMember(member, id, "member");
+      }
+
+      const result = await this.memberModel
+        .findOne({
+          _id: id,
+          mb_status: "ACTIVE",
+        })
+        .exec();
+
+      assert(result, Definer.genneral_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getAllRestaurantsData() {
     try {
       let result = await this.memberModel
@@ -54,8 +80,8 @@ class Restaurant {
           mb_type: "RESTAURANT",
         })
         .exec();
+      assert(result, Definer.genneral_err2);
 
-      assert(result, Definer.genneral_err1);
       return result;
     } catch (err) {
       throw err;
